@@ -15,12 +15,12 @@ public class EmployeePayrollService implements IEmployeePayrollService{
     }
     @Override
     public EmployeePayrollData getEmployeePayrollDataById(int employeeId) {
-        return employeePayrollDataList.get(employeeId);
+        return employeePayrollDataList.get(employeeId - 1);
     }
     @Override
     public EmployeePayrollData createEmployeePayrollData(EmployeePayrollDto employeePayrollDto) {
         EmployeePayrollData employeePayrollData;
-        employeePayrollData = new EmployeePayrollData(1, employeePayrollDto);
+        employeePayrollData = new EmployeePayrollData(employeePayrollDataList.size() + 1, employeePayrollDto);
         employeePayrollDataList.add(employeePayrollData);
         return employeePayrollData;
     }
@@ -29,11 +29,11 @@ public class EmployeePayrollService implements IEmployeePayrollService{
         EmployeePayrollData employeePayrollData = this.getEmployeePayrollDataById(employeeId);
         employeePayrollData.setName(employeePayrollDto.getName());
         employeePayrollData.setSalary((long) employeePayrollDto.getSalary());
-        employeePayrollDataList.set(employeeId, employeePayrollData);
+        employeePayrollDataList.set(employeeId -1, employeePayrollData);
         return employeePayrollData;
     }
     @Override
     public void deleteEmployeePayrollData(int employeeId) {
-        employeePayrollDataList.remove(employeeId);
+        employeePayrollDataList.remove(employeeId -1);
     }
 }
