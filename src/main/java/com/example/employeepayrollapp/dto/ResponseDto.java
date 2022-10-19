@@ -1,22 +1,10 @@
 package com.example.employeepayrollapp.dto;
 
-public class ResponseDto {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@AllArgsConstructor
+public @Data class ResponseDto {
     private String message;
     private Object data;
-    public ResponseDto(String message, Object data) {
-        this.message=message ;
-        this.data=data;
-    }
-    public String getMessage() {
-        return message;
-    }
-    public Object getData() {
-        return data;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    public void setData(Object data) {
-        this.data = data;
-    }
 }

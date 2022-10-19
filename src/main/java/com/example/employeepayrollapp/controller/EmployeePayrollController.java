@@ -4,13 +4,16 @@ import com.example.employeepayrollapp.dto.EmployeePayrollDto;
 import com.example.employeepayrollapp.dto.ResponseDto;
 import com.example.employeepayrollapp.model.EmployeePayrollData;
 import com.example.employeepayrollapp.service.IEmployeePayrollService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/employeePayrollService")
 public class EmployeePayrollController {
@@ -18,8 +21,7 @@ public class EmployeePayrollController {
     private IEmployeePayrollService employeePayrollService;
     @GetMapping(value = {"", "/", "/getAll"})
     public ResponseEntity<ResponseDto> getEmployeePayrollData() {
-        List<EmployeePayrollData> employeePayrollDataList;
-        employeePayrollDataList = employeePayrollService.getEmployeePayrollData();
+        List<EmployeePayrollData> employeePayrollDataList = employeePayrollService.getEmployeePayrollData();
         ResponseDto responseDto = new ResponseDto("Get All Call was Successful" ,employeePayrollDataList);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -29,8 +31,14 @@ public class EmployeePayrollController {
         ResponseDto responseDto=new ResponseDto("Get Call For ID was Successful", employeePayrollData);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+    @GetMapping("/department/{department}")
+    public ResponseEntity<ResponseDto> getEmployeePayrollData(@PathVariable("department") String department) {
+        List<EmployeePayrollData> employeePayrollDataList = employeePayrollService.getEmployeeByDepartment(department);
+        ResponseDto responseDto = new ResponseDto("Get Call For Department was Successful", employeePayrollDataList);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> addEmployeePayrollData(@RequestBody EmployeePayrollDto employeePayrollDto) {
+    public ResponseEntity<ResponseDto> addEmployeePayrollData(@Valid @RequestBody EmployeePayrollDto employeePayrollDto) {
         EmployeePayrollData employeePayrollData = employeePayrollService.createEmployeePayrollData(employeePayrollDto);
         ResponseDto responseDto = new ResponseDto("Employee Payroll data created Successfully", employeePayrollData);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
